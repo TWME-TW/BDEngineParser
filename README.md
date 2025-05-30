@@ -27,7 +27,7 @@ Add the following dependency to your pom.xml:
 <repository>
   <id>twme-repo</id>
   <name>TWME Repository</name>
-  <url>https://repo.twme.dev/<repository></url>
+  <url>https://repo.twme.dev/releases</url>
 </repository>
 ```
 
