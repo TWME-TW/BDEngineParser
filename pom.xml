@@ -66,4 +66,11 @@
             <version>2.13.1</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>twme-repo-releases</id>
+            <url>https://repo.twme.dev/releases</url>
+        </repository>
+    </distributionManagement>
 </project>
