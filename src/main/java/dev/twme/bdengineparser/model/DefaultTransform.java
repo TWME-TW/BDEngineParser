@@ -1,13 +1,17 @@
 package dev.twme.bdengineparser.model;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
  * Represents the default transformation settings for an entity in the BD Engine.
  */
 public class DefaultTransform {
+    @SerializedName("position")
     private List<Double> position;
+    @SerializedName("rotation")
     private Rotation rotation;
+    @SerializedName("scale")
     private List<Double> scale;
 
     /**

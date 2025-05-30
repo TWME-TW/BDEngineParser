@@ -8,19 +8,29 @@ import com.google.gson.annotations.SerializedName;
  * and text formatting options like bold, italic, underline, and strike-through.
  */
 public class TextOptions {
+    @SerializedName("color")
     private String color;
+    @SerializedName("alpha")
     private double alpha;
+    @SerializedName("backgroundColor")
     private String backgroundColor;
+    @SerializedName("backgroundAlpha")
     private double backgroundAlpha;
+    @SerializedName("bold")
     private boolean bold;
+    @SerializedName("italic")
     private boolean italic;
+    @SerializedName("underline")
     private boolean underline;
 
     @SerializedName("strikeThrough")
     private boolean strikeThrough;
 
+    @SerializedName("lineLength")
     private int lineLength;
+    @SerializedName("align")
     private String align;
+    @SerializedName("obfuscated")
     private boolean obfuscated;
 
     /**

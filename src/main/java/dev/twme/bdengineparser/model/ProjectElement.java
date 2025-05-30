@@ -12,21 +12,29 @@ public class ProjectElement {
 
     @SerializedName("isCollection")
     private Boolean isCollection;
-
+    @SerializedName("name")
     private String name;
+    @SerializedName("nbt")
     private String nbt;
+    @SerializedName("transforms")
     private List<Double> transforms;
+    @SerializedName("children")
     private List<ProjectElement> children;
 
     @SerializedName("isBackCollection")
     private Boolean isBackCollection;
+    @SerializedName("defaultTransform")
     private DefaultTransform defaultTransform;
 
     @SerializedName("isItemDisplay")
     private Boolean isItemDisplay;
+    @SerializedName("tagHead")
     private TagHead tagHead;
+    @SerializedName("textureValueList")
     private List<String> textureValueList;
+    @SerializedName("paintTexture")
     private Object paintTexture;
+    @SerializedName("defaultTextureValue")
     private String defaultTextureValue;
 
     @SerializedName("isBlockDisplay")
@@ -34,8 +42,11 @@ public class ProjectElement {
 
     @SerializedName("isTextDisplay")
     private Boolean isTextDisplay;
+
+    @SerializedName("options")
     private TextOptions options;
 
+    @SerializedName("brightness")
     private Brightness brightness;
 
     /**

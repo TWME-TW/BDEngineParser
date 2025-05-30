@@ -1,10 +1,14 @@
 package dev.twme.bdengineparser.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Represents the brightness settings for sky and blocks in the BD Engine.
  */
 public class Brightness {
+    @SerializedName("sky")
     private int sky;
+    @SerializedName("block")
     private int block;
 
     /**

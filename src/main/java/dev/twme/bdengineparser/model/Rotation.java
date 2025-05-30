@@ -1,12 +1,17 @@
 package dev.twme.bdengineparser.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Represents a rotation in the BD Engine.
  * This class encapsulates the rotation values around the x, y, and z axes.
  */
 public class Rotation {
+    @SerializedName("x")
     private double x;
+    @SerializedName("y")
     private double y;
+    @SerializedName("z")
     private double z;
 
     /**
