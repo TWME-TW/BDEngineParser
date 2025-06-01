@@ -37,7 +37,7 @@ Add the following dependency to your pom.xml:
 <dependency>
     <groupId>dev.twme</groupId>
     <artifactId>BDEngineParser</artifactId>
-    <version>2.1</version>
+    <version>2.2</version>
 </dependency>
 ```
 
