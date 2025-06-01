@@ -5,8 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import dev.twme.bdengineparser.exception.BDEngineParsingException;
+import dev.twme.bdengineparser.internal.TransformUtils;
 import dev.twme.bdengineparser.internal.WorldTransformCalculator; // Assumes this is public in internal package
 import dev.twme.bdengineparser.model.ProjectElement;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -183,5 +186,37 @@ public class BDEngineParser {
         if (rootElements != null && !rootElements.isEmpty()) {
             this.transformCalculator.calculateWorldTransforms(rootElements);
         }
+    }
+
+    /**
+     * Creates a 4x4 matrix representing a rotation around an arbitrary axis.
+     * This can be used by clients of the library to construct custom transformations
+     * that can then be multiplied with the world transforms calculated by this parser.
+     *
+     * @param axisX The x-component of the rotation axis.
+     * @param axisY The y-component of the rotation axis.
+     * @param axisZ The z-component of the rotation axis.
+     * @param angleRad The angle of rotation in radians.
+     * @return A new {@link Matrix4f} representing the specified axis-angle rotation.
+     * @throws IllegalArgumentException if the axis vector has zero length.
+     */
+    public Matrix4f createAxisAngleRotationMatrix(float axisX, float axisY, float axisZ, float angleRad) {
+        // We call the static method from our internal TransformUtils
+        return TransformUtils.createRotationAroundAxisMatrix(axisX, axisY, axisZ, angleRad);
+    }
+
+    /**
+     * Creates a 4x4 matrix representing a rotation around an arbitrary axis.
+     * This can be used by clients of the library to construct custom transformations
+     * that can then be multiplied with the world transforms calculated by this parser.
+     *
+     * @param axis The axis of rotation (will be normalized if not already).
+     * @param angleRad The angle of rotation in radians.
+     * @return A new {@link Matrix4f} representing the specified axis-angle rotation.
+     * @throws IllegalArgumentException if axis is null or a zero vector.
+     */
+    public Matrix4f createAxisAngleRotationMatrix(Vector3f axis, float angleRad) {
+        // We call the static method from our internal TransformUtils
+        return TransformUtils.createRotationAroundAxisMatrix(axis, angleRad);
     }
 }

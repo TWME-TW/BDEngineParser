@@ -3,6 +3,7 @@ package dev.twme.bdengineparser.internal;
 import dev.twme.bdengineparser.model.DefaultTransform;
 import dev.twme.bdengineparser.model.Rotation;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -78,5 +79,46 @@ public class TransformUtils {
             );
         }
         return matrix;
+    }
+
+    /**
+     * Creates a new rotation matrix that rotates around a given axis by a specified angle.
+     *
+     * @param axisX The x-component of the rotation axis.
+     * @param axisY The y-component of the rotation axis.
+     * @param axisZ The z-component of the rotation axis.
+     * @param angleRad The angle of rotation in radians.
+     * @return A new Matrix4f representing ONLY the specified axis-angle rotation.
+     * @throws IllegalArgumentException if the axis vector has zero length (after normalization attempt).
+     */
+    public static Matrix4f createRotationAroundAxisMatrix(float axisX, float axisY, float axisZ, float angleRad) {
+        // JOML's rotation(angle, x, y, z) expects the axis to be implicitly normalized if its length is not 0.
+        // However, it's good practice to handle the zero-length axis case explicitly.
+        float lengthSq = axisX * axisX + axisY * axisY + axisZ * axisZ;
+        if (lengthSq < 0.00001f) { // Check for zero vector before normalization attempt by JOML
+            throw new IllegalArgumentException("Rotation axis cannot be a zero vector.");
+        }
+        // Create a new identity matrix and then set its rotation.
+        // The rotation(angle, x, y, z) method sets the matrix to be this rotation.
+        return new Matrix4f().identity().rotation(angleRad, axisX, axisY, axisZ);
+    }
+
+    /**
+     * Creates a new rotation matrix that rotates around a given axis by a specified angle.
+     *
+     * @param axis The axis of rotation. JOML's rotation(angle, Vector3fc) will handle normalization
+     *             if the vector is not zero length.
+     * @param angleRad The angle of rotation in radians.
+     * @return A new Matrix4f representing ONLY the specified axis-angle rotation.
+     * @throws IllegalArgumentException if axis is null or a zero vector.
+     */
+    public static Matrix4f createRotationAroundAxisMatrix(Vector3f axis, float angleRad) {
+        if (axis == null || axis.lengthSquared() < 0.00001f) {
+            throw new IllegalArgumentException("Rotation axis cannot be null or a zero vector.");
+        }
+        // Create a new identity matrix and then set its rotation.
+        // The rotation(angle, Vector3fc) method sets the matrix to be this rotation.
+        // JOML will normalize the axis if its length is not 0.
+        return new Matrix4f().identity().rotation(angleRad, axis);
     }
 }
