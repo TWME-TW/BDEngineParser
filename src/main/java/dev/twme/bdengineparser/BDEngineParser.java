@@ -219,4 +219,40 @@ public class BDEngineParser {
         // We call the static method from our internal TransformUtils
         return TransformUtils.createRotationAroundAxisMatrix(axis, angleRad);
     }
+
+    /**
+     * Calculates the total number of elements (including all children recursively)
+     * in a given list of root {@link ProjectElement}s.
+     *
+     * @param rootElements The list of root ProjectElement objects.
+     * @return The total count of all elements. Returns 0 if the list is null or empty.
+     */
+    public int getTotalElementCount(List<ProjectElement> rootElements) {
+        if (rootElements == null || rootElements.isEmpty()) {
+            return 0;
+        }
+        int count = 0;
+        for (ProjectElement element : rootElements) {
+            count += countElementsRecursive(element);
+        }
+        return count;
+    }
+
+    /**
+     * Helper method to recursively count an element and its children.
+     * @param element The current ProjectElement.
+     * @return The count of this element plus all its descendants.
+     */
+    private int countElementsRecursive(ProjectElement element) {
+        if (element == null) {
+            return 0;
+        }
+        int count = 1; // Count the current element
+        if (element.getChildren() != null) {
+            for (ProjectElement child : element.getChildren()) {
+                count += countElementsRecursive(child); // Add count of children
+            }
+        }
+        return count;
+    }
 }
