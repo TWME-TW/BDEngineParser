@@ -1,6 +1,8 @@
 package dev.twme.bdengineparser.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.joml.Matrix4f;
 import java.util.List;
 
 /**
@@ -48,6 +50,9 @@ public class ProjectElement {
 
     @SerializedName("brightness")
     private Brightness brightness;
+
+    @Expose(serialize = false, deserialize = false)
+    private transient Matrix4f worldTransform;
 
     /**
      * Gets whether this element is a collection.
@@ -241,6 +246,22 @@ public class ProjectElement {
      * @param options a TextOptions object representing the text display options
      */
     public void setOptions(TextOptions options) { this.options = options; }
+
+    /**
+     * Gets the world transformation matrix for this element.
+     * @return a Matrix4f representing the world transformation
+     */
+    public Matrix4f getWorldTransform() {
+        return worldTransform;
+    }
+
+    /**
+     * Sets the world transformation matrix for this element.
+     * @param worldTransform a Matrix4f representing the world transformation
+     */
+    public void setWorldTransform(Matrix4f worldTransform) {
+        this.worldTransform = worldTransform;
+    }
 
     /**
      * Returns a string representation of the ProjectElement.
