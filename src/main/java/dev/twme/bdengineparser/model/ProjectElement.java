@@ -63,6 +63,7 @@ public class ProjectElement {
 
     /**
      * Gets the name of this element.
+     * Example: "oak_fence[east=true,south=true]"
      * @return the name of the element
      */
     public String getName() { return name; }
@@ -74,7 +75,7 @@ public class ProjectElement {
     public void setName(String name) { this.name = name; }
 
     /**
-     * Gets the NBT data associated with this element.
+     * Gets the additional NBT data associated with this element.
      * @return the NBT data as a string
      */
     public String getNbt() { return nbt; }
