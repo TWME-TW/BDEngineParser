@@ -9,6 +9,14 @@ import java.util.List;
  * WorldTransformCalculator is responsible for calculating the world transforms of ProjectElements.
  * It traverses the hierarchy of elements, applying local transformations to compute the world transform
  * relative to the world origin (0,0,0).
+ * 
+ * IMPORTANT: This class was fixed to use the correct matrix multiplication order.
+ * The correct order is: localMatrix * parentWorldTransform (not parentWorldTransform * localMatrix).
+ * This ensures that transformations are applied from the innermost element outward, which matches
+ * how Minecraft's display entity transformation system works.
+ * 
+ * Additionally, defaultTransform is no longer applied as the analysis showed that the 'transforms'
+ * field already contains all necessary transformation information including any default transforms.
  */
 public class WorldTransformCalculator {
     /**
