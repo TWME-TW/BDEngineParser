@@ -1,23 +1,12 @@
 package dev.twme.bdengineparser;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-import dev.twme.bdengineparser.exception.BDEngineParsingException;
-import dev.twme.bdengineparser.internal.TransformUtils;
-import dev.twme.bdengineparser.internal.WorldTransformCalculator; // Assumes this is public in internal package
-import dev.twme.bdengineparser.model.ProjectElement;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.StandardCharsets; // Assumes this is public in internal package
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -25,6 +14,19 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
+import dev.twme.bdengineparser.exception.BDEngineParsingException;
+import dev.twme.bdengineparser.internal.TransformUtils;
+import dev.twme.bdengineparser.internal.WorldTransformCalculator;
+import dev.twme.bdengineparser.model.ProjectElement;
 
 /**
  * BDEngineParser is a utility class for parsing BDEngine project files and calculating world transforms.

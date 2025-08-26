@@ -1,8 +1,8 @@
-import dev.twme.bdengineparser.BDEngineParser;
-import dev.twme.bdengineparser.model.ProjectElement;
-import dev.twme.bdengineparser.exception.BDEngineParsingException;
-
 import java.util.List;
+
+import dev.twme.bdengineparser.BDEngineParser;
+import dev.twme.bdengineparser.exception.BDEngineParsingException;
+import dev.twme.bdengineparser.model.ProjectElement;
 
 public class BDEngineFileTest {
     public static void main(String[] args) {
