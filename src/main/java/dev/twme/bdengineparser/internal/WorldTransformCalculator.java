@@ -33,18 +33,20 @@ public class WorldTransformCalculator {
     private void calculateTransformRecursive(ProjectElement element, Matrix4f parentWorldTransform) {
         if (element == null) return;
 
+        // Create the local transform matrix from the element's transforms
         Matrix4f localMatrix = TransformUtils.listToMatrix4f(element.getTransforms());
-        Matrix4f currentElementWorldTransform = new Matrix4f(parentWorldTransform).mul(localMatrix);
+        
+        // The correct order is: localMatrix * parentWorldTransform (reversed from before)
+        Matrix4f currentElementWorldTransform = new Matrix4f(localMatrix).mul(parentWorldTransform);
 
-        element.setWorldTransform(new Matrix4f(currentElementWorldTransform)); // Store a copy
+        // Store the computed world transform for this element
+        element.setWorldTransform(new Matrix4f(currentElementWorldTransform));
 
+        // For children, we don't use defaultTransform anymore as the analysis shows
+        // that transforms already contain all necessary transformation information
         Matrix4f parentTransformForChildren = new Matrix4f(currentElementWorldTransform);
 
-        if (element.getIsCollection() != null && element.getIsCollection() && element.getDefaultTransform() != null) {
-            Matrix4f defaultTransformMatrix = TransformUtils.defaultTransformToMatrix4f(element.getDefaultTransform());
-            parentTransformForChildren.mul(defaultTransformMatrix);
-        }
-
+        // Process children recursively
         if (element.getChildren() != null) {
             for (ProjectElement child : element.getChildren()) {
                 calculateTransformRecursive(child, parentTransformForChildren);
