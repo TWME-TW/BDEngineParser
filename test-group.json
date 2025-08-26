@@ -1,0 +1,270 @@
+[
+    {
+        "isCollection": true,
+        "name": "test-group",
+        "nbt": "",
+        "settings": {
+            "defaultBrightness": false
+        },
+        "mainNBT": "",
+        "transforms": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1
+        ],
+        "children": [
+            {
+                "isCollection": true,
+                "isBackCollection": false,
+                "name": "測試",
+                "nbt": "",
+                "transforms": [
+                    0.7071067811865475,
+                    0,
+                    0.7071067811865477,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    -0.7071067811865477,
+                    0,
+                    0.7071067811865475,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                ],
+                "children": [
+                    {
+                        "isCollection": true,
+                        "isBackCollection": false,
+                        "name": "測試測試",
+                        "nbt": "",
+                        "transforms": [
+                            0.7071067811865475,
+                            0,
+                            -0.7071067811865477,
+                            -0.7071067811865479,
+                            0,
+                            1,
+                            0,
+                            1.4374999999999998,
+                            0.7071067811865477,
+                            0,
+                            0.7071067811865475,
+                            -4.087050876069131e-16,
+                            0,
+                            0,
+                            0,
+                            1
+                        ],
+                        "children": [
+                            {
+                                "isBlockDisplay": true,
+                                "name": "chiseled_red_sandstone",
+                                "brightness": {
+                                    "sky": 15,
+                                    "block": 0
+                                },
+                                "nbt": "",
+                                "transforms": [
+                                    1,
+                                    0,
+                                    0,
+                                    0.7071067811865479,
+                                    0,
+                                    1,
+                                    0,
+                                    0.6875000000000002,
+                                    0,
+                                    0,
+                                    1,
+                                    4.087050876069131e-16,
+                                    0,
+                                    0,
+                                    0,
+                                    1
+                                ]
+                            },
+                            {
+                                "isBlockDisplay": true,
+                                "name": "chiseled_sandstone",
+                                "brightness": {
+                                    "sky": 15,
+                                    "block": 0
+                                },
+                                "nbt": "",
+                                "transforms": [
+                                    0.7071067811865474,
+                                    0,
+                                    -0.7071067811865477,
+                                    0.7071067811865479,
+                                    0,
+                                    1,
+                                    0,
+                                    2.220446049250313e-16,
+                                    0.7071067811865477,
+                                    0,
+                                    0.7071067811865474,
+                                    4.087050876069131e-16,
+                                    0,
+                                    0,
+                                    0,
+                                    1
+                                ]
+                            }
+                        ],
+                        "defaultTransform": {
+                            "position": [
+                                -0.7071067811865479,
+                                1.4374999999999998,
+                                -4.087050876069131e-16
+                            ],
+                            "rotation": {
+                                "x": 0,
+                                "y": -0.7853981633974485,
+                                "z": 0
+                            },
+                            "scale": [
+                                1,
+                                1,
+                                1
+                            ]
+                        }
+                    },
+                    {
+                        "isBlockDisplay": true,
+                        "name": "stripped_spruce_wood[axis=x]",
+                        "brightness": {
+                            "sky": 15,
+                            "block": 0
+                        },
+                        "nbt": "",
+                        "transforms": [
+                            1,
+                            0,
+                            0,
+                            4.440892098500626e-16,
+                            0,
+                            1,
+                            0,
+                            2.8899813895229027e-16,
+                            0,
+                            0,
+                            1,
+                            1.1102230246251565e-16,
+                            0,
+                            0,
+                            0,
+                            1
+                        ]
+                    },
+                    {
+                        "isBlockDisplay": true,
+                        "name": "acacia_wood[axis=x]",
+                        "brightness": {
+                            "sky": 15,
+                            "block": 0
+                        },
+                        "nbt": "",
+                        "transforms": [
+                            1,
+                            0,
+                            0,
+                            4.440892098500626e-16,
+                            0,
+                            1,
+                            0,
+                            0.3750000000000003,
+                            0,
+                            0,
+                            1,
+                            1.1102230246251565e-16,
+                            0,
+                            0,
+                            0,
+                            1
+                        ]
+                    }
+                ],
+                "defaultTransform": {
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": {
+                        "x": 0,
+                        "y": 0.7853981633974485,
+                        "z": 0
+                    },
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                }
+            },
+            {
+                "isItemDisplay": true,
+                "name": "player_head[display=none]",
+                "brightness": {
+                    "sky": 15,
+                    "block": 0
+                },
+                "nbt": "",
+                "tagHead": {
+                    "Value": ""
+                },
+                "textureValueList": [],
+                "transforms": [
+                    1,
+                    0,
+                    0,
+                    -0.5625,
+                    0,
+                    1,
+                    0,
+                    2.25,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                ]
+            }
+        ],
+        "listAnim": [
+            {
+                "id": 1,
+                "name": "Default"
+            }
+        ],
+        "listSound": [
+            {
+                "id": 1,
+                "name": "Default",
+                "tick": 2,
+                "tracks": []
+            }
+        ]
+    }
+]

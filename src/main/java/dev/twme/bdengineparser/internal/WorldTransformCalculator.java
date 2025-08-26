@@ -1,9 +1,10 @@
 package dev.twme.bdengineparser.internal;
 
-import dev.twme.bdengineparser.model.ProjectElement;
+import java.util.List;
+
 import org.joml.Matrix4f;
 
-import java.util.List;
+import dev.twme.bdengineparser.model.ProjectElement;
 
 /**
  * WorldTransformCalculator is responsible for calculating the world transforms of ProjectElements.

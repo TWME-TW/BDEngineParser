@@ -11,6 +11,7 @@ import dev.twme.bdengineparser.model.ProjectElement;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,7 +22,9 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 /**
  * BDEngineParser is a utility class for parsing BDEngine project files and calculating world transforms.
@@ -124,6 +127,101 @@ public class BDEngineParser {
         }
     }
 
+    // --- BDEngine File Format Methods ---
+
+    /**
+     * Parses a BDEngine file (.bdengine) from the specified file path without calculating world transforms.
+     * The .bdengine format contains base64-encoded, gzip-compressed JSON data.
+     *
+     * @param filePath the path to the .bdengine file
+     * @return a list of ProjectElement objects parsed from the file
+     * @throws BDEngineParsingException if there is an error reading or parsing the file
+     * @throws IllegalArgumentException if filePath is null or empty
+     */
+    public List<ProjectElement> parseBDEngineFileRaw(String filePath) throws BDEngineParsingException {
+        if (filePath == null || filePath.trim().isEmpty()) {
+            throw new IllegalArgumentException("File path cannot be null or empty.");
+        }
+        try {
+            Path path = Paths.get(filePath);
+            String base64Content = Files.readString(path, StandardCharsets.UTF_8).trim();
+            return parseBDEngineStringRaw(base64Content);
+        } catch (InvalidPathException e) {
+            throw new BDEngineParsingException("Invalid file path: " + filePath, e);
+        } catch (IOException e) {
+            throw new BDEngineParsingException("Error reading .bdengine file: " + filePath, e);
+        }
+    }
+
+    /**
+     * Parses a base64-encoded, gzip-compressed JSON string (BDEngine format) without calculating world transforms.
+     *
+     * @param base64String the base64-encoded string containing gzip-compressed JSON data
+     * @return a list of ProjectElement objects parsed from the decompressed JSON
+     * @throws BDEngineParsingException if there is an error decoding, decompressing, or parsing the data
+     * @throws IllegalArgumentException if base64String is null
+     */
+    public List<ProjectElement> parseBDEngineStringRaw(String base64String) throws BDEngineParsingException {
+        if (base64String == null) {
+            throw new IllegalArgumentException("Base64 string cannot be null.");
+        }
+        
+        try {
+            // Step 1: Base64 decode
+            byte[] compressedData = Base64.getDecoder().decode(base64String);
+            
+            // Step 2: Gzip decompress
+            String jsonString;
+            try (GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(compressedData));
+                 Reader reader = new InputStreamReader(gzipInputStream, StandardCharsets.UTF_8)) {
+                
+                StringBuilder jsonBuilder = new StringBuilder();
+                char[] buffer = new char[8192];
+                int charsRead;
+                while ((charsRead = reader.read(buffer)) != -1) {
+                    jsonBuilder.append(buffer, 0, charsRead);
+                }
+                jsonString = jsonBuilder.toString();
+            }
+            
+            // Step 3: Parse JSON using existing method
+            return parseJsonStringRaw(jsonString);
+            
+        } catch (IllegalArgumentException e) {
+            throw new BDEngineParsingException("Invalid base64 encoding in BDEngine data.", e);
+        } catch (IOException e) {
+            throw new BDEngineParsingException("Error decompressing gzip data in BDEngine format.", e);
+        }
+    }
+
+    /**
+     * Parses a BDEngine file (.bdengine) from the specified InputStream without calculating world transforms.
+     * The .bdengine format contains base64-encoded, gzip-compressed JSON data.
+     *
+     * @param inputStream the InputStream containing the .bdengine file data
+     * @return a list of ProjectElement objects parsed from the file
+     * @throws BDEngineParsingException if there is an error reading or parsing the InputStream
+     * @throws IllegalArgumentException if inputStream is null
+     */
+    public List<ProjectElement> parseBDEngineInputStreamRaw(InputStream inputStream) throws BDEngineParsingException {
+        if (inputStream == null) {
+            throw new IllegalArgumentException("Input stream cannot be null.");
+        }
+        
+        try (Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+            StringBuilder base64Builder = new StringBuilder();
+            char[] buffer = new char[8192];
+            int charsRead;
+            while ((charsRead = reader.read(buffer)) != -1) {
+                base64Builder.append(buffer, 0, charsRead);
+            }
+            String base64Content = base64Builder.toString().trim();
+            return parseBDEngineStringRaw(base64Content);
+        } catch (IOException e) {
+            throw new BDEngineParsingException("Error reading .bdengine data from input stream.", e);
+        }
+    }
+
     // --- Combined Parsing and Transform Calculation Methods ---
 
     /**
@@ -167,6 +265,53 @@ public class BDEngineParser {
      */
     public List<ProjectElement> parseJsonString(String jsonString) throws BDEngineParsingException {
         List<ProjectElement> rootElements = parseJsonStringRaw(jsonString);
+        calculateWorldTransformsForElements(rootElements);
+        return rootElements;
+    }
+
+    /**
+     * Parses a BDEngine file (.bdengine) from the specified file path AND calculates world transforms for all elements.
+     * The .bdengine format contains base64-encoded, gzip-compressed JSON data.
+     * The calculated transforms are stored in each {@link ProjectElement#getWorldTransform()}.
+     *
+     * @param filePath the path to the .bdengine file
+     * @return a list of ProjectElement objects with their world transforms calculated
+     * @throws BDEngineParsingException if there is an error reading or parsing the file
+     * @throws IllegalArgumentException if filePath is null or empty
+     */
+    public List<ProjectElement> parseBDEngineFile(String filePath) throws BDEngineParsingException {
+        List<ProjectElement> rootElements = parseBDEngineFileRaw(filePath);
+        calculateWorldTransformsForElements(rootElements);
+        return rootElements;
+    }
+
+    /**
+     * Parses a base64-encoded, gzip-compressed JSON string (BDEngine format) AND calculates world transforms for all elements.
+     * The calculated transforms are stored in each {@link ProjectElement#getWorldTransform()}.
+     *
+     * @param base64String the base64-encoded string containing gzip-compressed JSON data
+     * @return a list of ProjectElement objects with their world transforms calculated
+     * @throws BDEngineParsingException if there is an error decoding, decompressing, or parsing the data
+     * @throws IllegalArgumentException if base64String is null
+     */
+    public List<ProjectElement> parseBDEngineString(String base64String) throws BDEngineParsingException {
+        List<ProjectElement> rootElements = parseBDEngineStringRaw(base64String);
+        calculateWorldTransformsForElements(rootElements);
+        return rootElements;
+    }
+
+    /**
+     * Parses a BDEngine file (.bdengine) from the specified InputStream AND calculates world transforms for all elements.
+     * The .bdengine format contains base64-encoded, gzip-compressed JSON data.
+     * The calculated transforms are stored in each {@link ProjectElement#getWorldTransform()}.
+     *
+     * @param inputStream the InputStream containing the .bdengine file data
+     * @return a list of ProjectElement objects with their world transforms calculated
+     * @throws BDEngineParsingException if there is an error reading or parsing the InputStream
+     * @throws IllegalArgumentException if inputStream is null
+     */
+    public List<ProjectElement> parseBDEngineInputStream(InputStream inputStream) throws BDEngineParsingException {
+        List<ProjectElement> rootElements = parseBDEngineInputStreamRaw(inputStream);
         calculateWorldTransformsForElements(rootElements);
         return rootElements;
     }
