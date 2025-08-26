@@ -1,14 +1,23 @@
 package dev.twme.bdengineparser.internal;
 
-import dev.twme.bdengineparser.model.ProjectElement;
+import java.util.List;
+
 import org.joml.Matrix4f;
 
-import java.util.List;
+import dev.twme.bdengineparser.model.ProjectElement;
 
 /**
  * WorldTransformCalculator is responsible for calculating the world transforms of ProjectElements.
  * It traverses the hierarchy of elements, applying local transformations to compute the world transform
  * relative to the world origin (0,0,0).
+ * 
+ * IMPORTANT: This class was fixed to use the correct matrix multiplication order.
+ * The correct order is: localMatrix * parentWorldTransform (not parentWorldTransform * localMatrix).
+ * This ensures that transformations are applied from the innermost element outward, which matches
+ * how Minecraft's display entity transformation system works.
+ * 
+ * Additionally, defaultTransform is no longer applied as the analysis showed that the 'transforms'
+ * field already contains all necessary transformation information including any default transforms.
  */
 public class WorldTransformCalculator {
     /**
@@ -33,18 +42,20 @@ public class WorldTransformCalculator {
     private void calculateTransformRecursive(ProjectElement element, Matrix4f parentWorldTransform) {
         if (element == null) return;
 
+        // Create the local transform matrix from the element's transforms
         Matrix4f localMatrix = TransformUtils.listToMatrix4f(element.getTransforms());
-        Matrix4f currentElementWorldTransform = new Matrix4f(parentWorldTransform).mul(localMatrix);
+        
+        // The correct order is: localMatrix * parentWorldTransform (reversed from before)
+        Matrix4f currentElementWorldTransform = new Matrix4f(localMatrix).mul(parentWorldTransform);
 
-        element.setWorldTransform(new Matrix4f(currentElementWorldTransform)); // Store a copy
+        // Store the computed world transform for this element
+        element.setWorldTransform(new Matrix4f(currentElementWorldTransform));
 
+        // For children, we don't use defaultTransform anymore as the analysis shows
+        // that transforms already contain all necessary transformation information
         Matrix4f parentTransformForChildren = new Matrix4f(currentElementWorldTransform);
 
-        if (element.getIsCollection() != null && element.getIsCollection() && element.getDefaultTransform() != null) {
-            Matrix4f defaultTransformMatrix = TransformUtils.defaultTransformToMatrix4f(element.getDefaultTransform());
-            parentTransformForChildren.mul(defaultTransformMatrix);
-        }
-
+        // Process children recursively
         if (element.getChildren() != null) {
             for (ProjectElement child : element.getChildren()) {
                 calculateTransformRecursive(child, parentTransformForChildren);
